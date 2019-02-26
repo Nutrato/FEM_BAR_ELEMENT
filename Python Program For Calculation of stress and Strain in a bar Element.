@@ -1,0 +1,64 @@
+import numpy as np
+from scipy.linalg import eigh
+import math
+from matplotlib import pyplot as plt
+import seaborn as sns
+
+def bar(num_elems=2,E=2e5,A=500,L=2,density=7.8e-9):
+    restrained_dofs = [0,]
+    
+    #elemental stiffness matrix
+    k=np.array([[1,-1],[-1,1]])*float((E*(A/num_elems)/(L/num_elems)))
+    #print(k)
+    
+    
+    #Elemental body force matrix
+    body_force=np.array([[1],[1]])*float(((density*(A/num_elems)*(L/num_elems)/2)))
+    #print(body_force)
+    
+    
+    #Global stifness matrix
+    K = np.zeros((num_elems+1,num_elems+1))
+    
+    
+    # assembly of elements
+    for i in range(num_elems):
+        K_temp = np.zeros((num_elems+1,num_elems+1))
+        K_temp[i:i+2,i:i+2] = k
+        K += K_temp
+    #print(K)
+
+    #Global body force matrix
+    F=np.zeros((num_elems+1)).reshape(3,1)
+    #print(F)
+    
+    
+    # assembly of body forces
+    for i in range(num_elems):
+        F_temp=np.zeros((num_elems+1)).reshape(3,1)
+        F_temp[i:i+2,i:i+2] = body_force
+        F+=F_temp
+    #print(F)
+    
+    # remove the fixed degrees of freedom
+    for dof in restrained_dofs:
+        for i in [0,1]:
+            K = np.delete(K, dof, axis=i)
+            #print(K)
+    F=F[1:]
+    #print(F)
+    
+    
+    #Calculation of displacment Matrix
+    U=np.linalg.inv(K)*F
+    U=U[0].reshape(2,1)
+    print(K)
+    print(F)
+    print(U)
+    
+    
+    
+    #Claculation of stress and Strain
+    Stress=np.array([1, -1])*U *float(E/(L/num_elems))
+    print(Stress)
+bar()
