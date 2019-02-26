@@ -37,6 +37,18 @@ If we assume material is steel with Young’s modulus 210 GPa then we can calcul
                         end and apply a 100KN of force and to measure the displacements we have touse strain gauges. As told earlier this method 
                         is expensive and requires lot of planning of experiment.
                         
-3. Numerical Method or FEM or FEA: In FEM every continuous body is discretized into elements or it is finalized. So let's see how it is done. 
-                                   Let’s divide the bar shown into two elements.
-                                   
+3. Numerical Method or FEM or FEA: In FEM every continuous body is discretized into elements or it is finalized. So let's see how it is done.
+
+The basic equation of FEM is K * u = F
+Where K is stiffness, u is displacement and F is Force
+
+Since Numerical methods are used in FEM to solve the problems and Numerical Methods use Matrices we express or write FEM equation as 
+{K} . {u} = {F}
+Where {K} is stiffness Matrix, {u} is displacement Matrix and {F} is Force Matrix.
+
+1st of all stifness matrix is formed. 
+2nd displacement is calculated by multiplying inverse of stiffness mtrix and force matrix.
+3rd stress and strain are calculated using standard formulas.
+
+
+                                  
